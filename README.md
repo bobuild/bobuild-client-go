@@ -22,7 +22,7 @@ type Customer struct {
     Email string `json:"email"`,
 }
 
-customers, err := bobuild.GetList[string](client, "/customers")
+customers, err := bobuild.GetList[Customer](client, "/customers")
 if err != nil {
     log.Fatal(err)
 }
