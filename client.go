@@ -168,7 +168,7 @@ func Post[K any](c *Client, endpoint string, payload interface{}) (*K, error) {
 
 type BobuildInsertResponseType struct {
 	Success bool   `json:"success"`
-	Error   bool   `json:"error"`
+	Error   string `json:"error"`
 	Object  string `json:"object"`
 	ID      int    `json:"id"`
 }
@@ -185,7 +185,7 @@ func Insert(c *Client, endpoint string, payload interface{}) (*BobuildInsertResp
 
 type BobuildInsertMultipleResponseType struct {
 	Success bool   `json:"success"`
-	Error   bool   `json:"error"`
+	Error   string `json:"error"`
 	Object  string `json:"object"`
 	ID      []int  `json:"id"`
 }
@@ -201,8 +201,8 @@ func InsertMultiple(c *Client, endpoint string, payload interface{}) (*BobuildIn
 }
 
 type BobuildDeleteResponseType struct {
-	Success bool `json:"success"`
-	Error   bool `json:"error"`
+	Success bool   `json:"success"`
+	Error   string `json:"error"`
 }
 
 func Delete(c *Client, endpoint string) (*BobuildDeleteResponseType, error) {
