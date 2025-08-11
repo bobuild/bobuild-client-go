@@ -205,7 +205,7 @@ type BobuildDeleteResponseType struct {
 	Error   bool `json:"error"`
 }
 
-func Delete(c *Client, endpoint string, payload interface{}) (*BobuildDeleteResponseType, error) {
+func Delete(c *Client, endpoint string) (*BobuildDeleteResponseType, error) {
 	res, err := Post[BobuildDeleteResponseType](c, endpoint, payload)
 	if err != nil {
 		return nil, err
