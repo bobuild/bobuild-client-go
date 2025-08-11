@@ -206,7 +206,7 @@ type BobuildDeleteResponseType struct {
 }
 
 func Delete(c *Client, endpoint string) (*BobuildDeleteResponseType, error) {
-	res, err := Post[BobuildDeleteResponseType](c, endpoint, payload)
+	res, err := Post[BobuildDeleteResponseType](c, endpoint, struct{}{})
 	if err != nil {
 		return nil, err
 	}
