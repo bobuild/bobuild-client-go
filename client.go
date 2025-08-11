@@ -197,3 +197,18 @@ func InsertMultiple(c *Client, endpoint string, payload interface{}) (*BobuildIn
 	// Parse the response
 	return res, nil
 }
+
+type BobuildDeleteResponseType struct {
+	Success bool `json:"success"`
+	Error   bool `json:"error"`
+}
+
+func Delete(c *Client, endpoint string, payload interface{}) (*BobuildDeleteResponseType, error) {
+	res, err := Post[BobuildDeleteResponseType](c, endpoint, payload)
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse the response
+	return res, nil
+}
