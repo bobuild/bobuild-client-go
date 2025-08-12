@@ -118,7 +118,7 @@ func GetList[K any](c *Client, endpoint string) ([]K, error) {
 	return items, nil
 }
 
-func Post[K any](c *Client, endpoint string, payload interface{}) (*K, error) {
+func post[K any](c *Client, endpoint string, method string, payload interface{}) (*K, error) {
 	// Marshal the payload to JSON
 	jsonData, err := json.Marshal(payload)
 	if err != nil {
@@ -126,7 +126,7 @@ func Post[K any](c *Client, endpoint string, payload interface{}) (*K, error) {
 	}
 
 	// Create a new HTTP request
-	req, err := http.NewRequest("POST", c.makeURL(endpoint), bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest(method, c.makeURL(endpoint), bytes.NewBuffer(jsonData))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create HTTP request: %w", err)
 	}
@@ -174,7 +174,7 @@ type BobuildInsertResponseType struct {
 }
 
 func Insert(c *Client, endpoint string, payload interface{}) (*BobuildInsertResponseType, error) {
-	res, err := Post[BobuildInsertResponseType](c, endpoint, payload)
+	res, err := post[BobuildInsertResponseType](c, endpoint, "PATCH", payload)
 	if err != nil {
 		return nil, err
 	}
@@ -191,7 +191,7 @@ type BobuildInsertMultipleResponseType struct {
 }
 
 func InsertMultiple(c *Client, endpoint string, payload interface{}) (*BobuildInsertMultipleResponseType, error) {
-	res, err := Post[BobuildInsertMultipleResponseType](c, endpoint, payload)
+	res, err := post[BobuildInsertMultipleResponseType](c, endpoint, "PATCH", payload)
 	if err != nil {
 		return nil, err
 	}
@@ -206,7 +206,7 @@ type BobuildDeleteResponseType struct {
 }
 
 func Delete(c *Client, endpoint string) (*BobuildDeleteResponseType, error) {
-	res, err := Post[BobuildDeleteResponseType](c, endpoint, struct{}{})
+	res, err := post[BobuildDeleteResponseType](c, endpoint, "DELETE", struct{}{})
 	if err != nil {
 		return nil, err
 	}
