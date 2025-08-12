@@ -18,6 +18,30 @@ type Client struct {
 	UseTLS     bool
 }
 
+type BobuildInsertResponseType struct {
+	Success bool   `json:"success"`
+	Error   string `json:"error"`
+	Object  string `json:"object"`
+	ID      int    `json:"id"`
+}
+
+type BobuildInsertMultipleResponseType struct {
+	Success bool   `json:"success"`
+	Error   string `json:"error"`
+	Object  string `json:"object"`
+	ID      []int  `json:"id"`
+}
+
+type BobuildModifyResponseType struct {
+	Success bool   `json:"success"`
+	Error   string `json:"error"`
+}
+
+type BobuildDeleteResponseType struct {
+	Success bool   `json:"success"`
+	Error   string `json:"error"`
+}
+
 func NewClient(domain, apiKey string) *Client {
 	return &Client{
 		Domain:     domain,
@@ -118,6 +142,46 @@ func GetList[K any](c *Client, endpoint string) ([]K, error) {
 	return items, nil
 }
 
+func Insert(c *Client, endpoint string, payload interface{}) (*BobuildInsertResponseType, error) {
+	res, err := post[BobuildInsertResponseType](c, endpoint, "POST", payload)
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse the response
+	return res, nil
+}
+
+func InsertMultiple(c *Client, endpoint string, payload interface{}) (*BobuildInsertMultipleResponseType, error) {
+	res, err := post[BobuildInsertMultipleResponseType](c, endpoint, "POST", payload)
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse the response
+	return res, nil
+}
+
+func Modify(c *Client, endpoint string, payload interface{}) (*BobuildModifyResponseType, error) {
+	res, err := post[BobuildModifyResponseType](c, endpoint, "PATCH", payload)
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse the response
+	return res, nil
+}
+
+func Delete(c *Client, endpoint string) (*BobuildDeleteResponseType, error) {
+	res, err := post[BobuildDeleteResponseType](c, endpoint, "DELETE", struct{}{})
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse the response
+	return res, nil
+}
+
 func post[K any](c *Client, endpoint string, method string, payload interface{}) (*K, error) {
 	// Marshal the payload to JSON
 	jsonData, err := json.Marshal(payload)
@@ -164,53 +228,4 @@ func post[K any](c *Client, endpoint string, method string, payload interface{})
 
 	// Return the parsed response
 	return &apiResponse, nil
-}
-
-type BobuildInsertResponseType struct {
-	Success bool   `json:"success"`
-	Error   string `json:"error"`
-	Object  string `json:"object"`
-	ID      int    `json:"id"`
-}
-
-func Insert(c *Client, endpoint string, payload interface{}) (*BobuildInsertResponseType, error) {
-	res, err := post[BobuildInsertResponseType](c, endpoint, "PATCH", payload)
-	if err != nil {
-		return nil, err
-	}
-
-	// Parse the response
-	return res, nil
-}
-
-type BobuildInsertMultipleResponseType struct {
-	Success bool   `json:"success"`
-	Error   string `json:"error"`
-	Object  string `json:"object"`
-	ID      []int  `json:"id"`
-}
-
-func InsertMultiple(c *Client, endpoint string, payload interface{}) (*BobuildInsertMultipleResponseType, error) {
-	res, err := post[BobuildInsertMultipleResponseType](c, endpoint, "PATCH", payload)
-	if err != nil {
-		return nil, err
-	}
-
-	// Parse the response
-	return res, nil
-}
-
-type BobuildDeleteResponseType struct {
-	Success bool   `json:"success"`
-	Error   string `json:"error"`
-}
-
-func Delete(c *Client, endpoint string) (*BobuildDeleteResponseType, error) {
-	res, err := post[BobuildDeleteResponseType](c, endpoint, "DELETE", struct{}{})
-	if err != nil {
-		return nil, err
-	}
-
-	// Parse the response
-	return res, nil
 }
